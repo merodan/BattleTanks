@@ -46,7 +46,7 @@ void ATankPlayerController::AimTowardsCrossHair()
 	FVector HitLocation; // OUT Parameter
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"), *HitLocation.ToString());
+		// UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"), *HitLocation.ToString());
 
 		// TODO make the tank aim
 		GetControlledTank()->AimAt(HitLocation);
