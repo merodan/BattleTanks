@@ -59,10 +59,15 @@ void UAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	if (bHaveAimSolution)
 	{
 		auto LaunchDirection = LaunchVelocity.GetSafeNormal();
-
-		auto TankName = GetOwner()->GetName();
-		// UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s"), *TankName, *LaunchDirection.ToString());
 		MoveBarrelTowards(LaunchDirection);
+
+		float Time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution found!"), Time);
+	}
+	else
+	{
+		float Time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f: No aim solution found."), Time);
 	}
 }
 
@@ -76,8 +81,8 @@ void UAimingComponent::SetBarrelReference(UTankBarrel * SetBarrel)
 void UAimingComponent::MoveBarrelTowards(FVector LaunchDirection)
 {
 	auto BarrelRotation = Barrel->GetForwardVector().Rotation();
-	auto AimAsRotator = LaunchDirection.Rotation();
-	auto TankName = GetOwner()->GetName();
+	// auto AimAsRotator = LaunchDirection.Rotation();
+	// auto TankName = GetOwner()->GetName();
 	// UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s (%s)"), *AimAsRotator.ToString(), *TankName);
 
 	Barrel->Elevate(5);

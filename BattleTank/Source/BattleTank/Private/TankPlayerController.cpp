@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Tank.h"
 #include "TankPlayerController.h"
 #include "Engine/World.h"
 
@@ -83,7 +84,7 @@ bool ATankPlayerController::GetLookDirection(FVector2D CrossHairLocation, FVecto
 		CrossHairLocation.X, 
 		CrossHairLocation.Y, 
 		CameraWorldLocation, 
-		LookDirection
+		OUT LookDirection
 	);
 }
 
@@ -104,6 +105,9 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 		OutHitLocation = HitResult.Location;
 		return true;
 	}
-	OutHitLocation = FVector(0.f);
-	return false;
+	else
+	{
+		OutHitLocation = FVector(0);
+		return false;
+	}
 }

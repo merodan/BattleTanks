@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tank.h"
+#include "AimingComponent.h"
 #include "TankBarrel.h" // Barrel used in cpp, so #include is needed instead of forward declaration
 
 
