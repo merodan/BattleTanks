@@ -41,6 +41,6 @@ protected:
 
 private:
 	UPROPERTY(EditAnywhere, Category = Projectile)
-	float LaunchSpeed = 100000;
+	float LaunchSpeed = 10000;
 	
 };

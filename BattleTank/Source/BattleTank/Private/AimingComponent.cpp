@@ -58,6 +58,7 @@ void UAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 
 	if (bHaveAimSolution)
 	{
+		// Get Direction
 		auto LaunchDirection = LaunchVelocity.GetSafeNormal();
 		MoveBarrelTowards(LaunchDirection);
 
@@ -80,10 +81,11 @@ void UAimingComponent::SetBarrelReference(UTankBarrel * SetBarrel)
 
 void UAimingComponent::MoveBarrelTowards(FVector LaunchDirection)
 {
-	auto BarrelRotation = Barrel->GetForwardVector().Rotation();
-	// auto AimAsRotator = LaunchDirection.Rotation();
-	// auto TankName = GetOwner()->GetName();
+	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
+	auto AimAsRotator = LaunchDirection.Rotation();
+	auto DeltaRotator = AimAsRotator - BarrelRotator;
 	// UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s (%s)"), *AimAsRotator.ToString(), *TankName);
 
-	Barrel->Elevate(5);
+	// Elevation only
+	Barrel->Elevate(DeltaRotator.Pitch);
 }
