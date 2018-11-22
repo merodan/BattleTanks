@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tank.h"
+#include "TankBarrel.h" // Barrel used in cpp, so #include is needed instead of forward declaration
 
 
 // Sets default values
@@ -42,7 +43,7 @@ void ATank::AimAt(FVector HitLocation)
 }
 
 // Needed to make it callable in Blueprint
-void ATank::SetBarrelReference(UStaticMeshComponent * SetBarrel)
+void ATank::SetBarrelReference(UTankBarrel* SetBarrel)
 {
 	TankAimingComponent->SetBarrelReference(SetBarrel);
 }

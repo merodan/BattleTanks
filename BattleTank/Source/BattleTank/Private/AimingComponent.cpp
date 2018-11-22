@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "AimingComponent.h"
+#include "TankBarrel.h" // Barrel used in cpp, so #include is needed instead of forward declaration
 
 
 // Sets default values for this component's properties
@@ -66,7 +67,7 @@ void UAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 }
 
 
-void UAimingComponent::SetBarrelReference(UStaticMeshComponent * SetBarrel)
+void UAimingComponent::SetBarrelReference(UTankBarrel * SetBarrel)
 {
 	Barrel = SetBarrel;
 }
@@ -77,5 +78,7 @@ void UAimingComponent::MoveBarrelTowards(FVector LaunchDirection)
 	auto BarrelRotation = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = LaunchDirection.Rotation();
 	auto TankName = GetOwner()->GetName();
-	UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s (%s)"), *AimAsRotator.ToString(), *TankName);
+	// UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s (%s)"), *AimAsRotator.ToString(), *TankName);
+
+	Barrel->Elevate(5);
 }

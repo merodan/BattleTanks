@@ -7,7 +7,10 @@
 #include "Kismet/GameplayStatics.h"
 #include "AimingComponent.generated.h"
 
+// Forward Declaration
+class UTankBarrel;
 
+// Holds barrel's properties and Elevate method
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UAimingComponent : public UActorComponent
 {
@@ -27,10 +30,10 @@ public:
 
 	void AimAt(FVector HitLocation, float LaunchSpeed);
 	
-	void SetBarrelReference(UStaticMeshComponent* SetBarrel);
+	void SetBarrelReference(UTankBarrel* SetBarrel);
 
 	void MoveBarrelTowards(FVector LaunchDirection);
 	
 private:
-	UStaticMeshComponent* Barrel = nullptr;
+	UTankBarrel* Barrel = nullptr;
 };
