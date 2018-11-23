@@ -3,6 +3,7 @@
 #include "Tank.h"
 #include "AimingComponent.h"
 #include "TankBarrel.h" // Barrel used in cpp, so #include is needed instead of forward declaration
+#include "TankTurret.h"
 
 
 // Sets default values
@@ -37,15 +38,27 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-
-void ATank::AimAt(FVector HitLocation)
-{
-	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
-}
-
 // Needed to make it callable in Blueprint
 void ATank::SetBarrelReference(UTankBarrel* SetBarrel)
 {
 	TankAimingComponent->SetBarrelReference(SetBarrel);
 }
 
+// Needed to make it callable in Blueprint
+void ATank::SetTurretReference(UTankTurret* SetTurret)
+{
+	TankAimingComponent->SetTurretReference(SetTurret);
+}
+
+
+void ATank::AimAt(FVector HitLocation)
+{
+	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
+}
+
+
+void ATank::Fire()
+{
+	float Time = GetWorld()->GetTimeSeconds();
+	UE_LOG(LogTemp, Warning, TEXT("%f: Fire Action working!"), Time);
+}

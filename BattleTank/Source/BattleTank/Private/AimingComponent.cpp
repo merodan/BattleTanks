@@ -2,6 +2,7 @@
 
 #include "AimingComponent.h"
 #include "TankBarrel.h" // Barrel used in cpp, so #include is needed instead of forward declaration
+#include "TankTurret.h"
 
 
 // Sets default values for this component's properties
@@ -63,19 +64,24 @@ void UAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		MoveBarrelTowards(LaunchDirection);
 
 		float Time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution found!"), Time);
+		// UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution found!"), Time);
 	}
 	else
 	{
 		float Time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f: No aim solution found."), Time);
+		// UE_LOG(LogTemp, Warning, TEXT("%f: No aim solution found."), Time);
 	}
 }
 
 
-void UAimingComponent::SetBarrelReference(UTankBarrel * SetBarrel)
+void UAimingComponent::SetBarrelReference(UTankBarrel* SetBarrel)
 {
 	Barrel = SetBarrel;
+}
+
+void UAimingComponent::SetTurretReference(UTankTurret* SetTurret)
+{
+	Turret = SetTurret;
 }
 
 
@@ -84,8 +90,10 @@ void UAimingComponent::MoveBarrelTowards(FVector LaunchDirection)
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = LaunchDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
-	// UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s (%s)"), *AimAsRotator.ToString(), *TankName);
 
-	// Elevation only
+	// Elevation
 	Barrel->Elevate(DeltaRotator.Pitch);
+
+	// Rotation
+	Turret->Rotate(DeltaRotator.Yaw);
 }
