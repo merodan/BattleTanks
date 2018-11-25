@@ -2,8 +2,10 @@
 
 #include "Tank.h"
 #include "AimingComponent.h"
+#include "Engine/World.h"
 #include "TankBarrel.h" // Barrel used in cpp, so #include is needed instead of forward declaration
 #include "TankTurret.h"
+#include "Projectile.h"
 
 
 // Sets default values
@@ -42,6 +44,7 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void ATank::SetBarrelReference(UTankBarrel* SetBarrel)
 {
 	TankAimingComponent->SetBarrelReference(SetBarrel);
+	Barrel = SetBarrel;
 }
 
 // Needed to make it callable in Blueprint
@@ -61,4 +64,15 @@ void ATank::Fire()
 {
 	float Time = GetWorld()->GetTimeSeconds();
 	UE_LOG(LogTemp, Warning, TEXT("%f: Fire Action working!"), Time);
+
+	if (!Barrel) { return; }
+
+	// Launches a projectile at the socket location of the barrel
+	auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+		ProjectileBlueprint,
+		Barrel->GetSocketLocation(FName("Projectile")),
+		Barrel->GetSocketRotation(FName("Projectile"))
+	);
+
+	Projectile->LaunchProjectile(LaunchSpeed);
 }
