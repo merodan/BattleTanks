@@ -2,6 +2,7 @@
 
 #include "Tank.h"
 #include "AimingComponent.h"
+#include "TankMovementComponent.h"
 #include "Engine/World.h"
 #include "TankBarrel.h" // Barrel used in cpp, so #include is needed instead of forward declaration
 #include "TankTurret.h"
@@ -75,7 +76,7 @@ void ATank::Fire()
 			Barrel->GetSocketLocation(FName("Projectile")),
 			Barrel->GetSocketRotation(FName("Projectile"))
 			);
-
+		if (!Projectile) { return; }
 		Projectile->LaunchProjectile(LaunchSpeed);
 		// Reset to current game time
 		LastFireTime = GetWorld()->GetTimeSeconds();

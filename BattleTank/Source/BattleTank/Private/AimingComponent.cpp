@@ -38,10 +38,6 @@ void UAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 void UAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
-	/*auto PlayerTankName = GetOwner()->GetName();
-	auto BarrelLocation = Barrel->GetComponentLocation();
-	UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s from %s"), *PlayerTankName, *HitLocation.ToString(), *BarrelLocation.ToString());*/
-
 	if (!Barrel) { return; }
 	FVector LaunchVelocity(0);
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
@@ -65,12 +61,10 @@ void UAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		MoveBarrelTowards(LaunchDirection);
 
 		float Time = GetWorld()->GetTimeSeconds();
-		// UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution found!"), Time);
 	}
 	else
 	{
 		float Time = GetWorld()->GetTimeSeconds();
-		// UE_LOG(LogTemp, Warning, TEXT("%f: No aim solution found."), Time);
 	}
 }
 
