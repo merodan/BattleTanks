@@ -36,9 +36,15 @@ void UAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 }
 
 
+void UAimingComponent::Initialise(UTankBarrel * SetBarrel, UTankTurret * SetTurret)
+{
+	Barrel = SetBarrel;
+	Turret = SetTurret;
+}
+
 void UAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
-	if (!Barrel) { return; }
+	if (ensure(!Barrel)) { return; }
 	FVector LaunchVelocity(0);
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 	
@@ -69,26 +75,18 @@ void UAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 }
 
 
-void UAimingComponent::SetBarrelReference(UTankBarrel* SetBarrel)
-{
-	Barrel = SetBarrel;
-}
-
-void UAimingComponent::SetTurretReference(UTankTurret* SetTurret)
-{
-	Turret = SetTurret;
-}
-
-
 void UAimingComponent::MoveBarrelTowards(FVector LaunchDirection)
 {
-	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
-	auto AimAsRotator = LaunchDirection.Rotation();
-	auto DeltaRotator = AimAsRotator - BarrelRotator;
+	if (ensure(Barrel && Turret))
+	{
+		auto BarrelRotator = Barrel->GetForwardVector().Rotation();
+		auto AimAsRotator = LaunchDirection.Rotation();
+		auto DeltaRotator = AimAsRotator - BarrelRotator;
 
-	// Elevation
-	Barrel->Elevate(DeltaRotator.Pitch);
+		// Elevation
+		Barrel->Elevate(DeltaRotator.Pitch);
 
-	// Rotation
-	Turret->Rotate(DeltaRotator.Yaw);
+		// Rotation
+		Turret->Rotate(DeltaRotator.Yaw);
+	}
 }

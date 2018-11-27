@@ -3,20 +3,22 @@
 #include "TankPlayerController.h"
 #include "Tank.h"
 #include "Engine/World.h"
+#include "AimingComponent.h"
 
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto ControlledTank = GetControlledTank();
-	if (!ControlledTank)
+	UAimingComponent* AimingComponent = GetControlledTank()->FindComponentByClass<UAimingComponent>();
+	if (AimingComponent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Failed to GetControlledTank!"));
+		// Broadcast method to BP, no implementation in C++ needed.
+		FoundAimingComponent(AimingComponent);
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Controlled Tank: %s"), *ControlledTank->GetName());
+		UE_LOG(LogTemp, Warning, TEXT("PlayerController can't find AimingComponent at BeginPlay()."));
 	}
 }
 
@@ -39,10 +41,7 @@ ATank* ATankPlayerController::GetControlledTank() const
 
 void ATankPlayerController::AimTowardsCrossHair()
 {
-	if (!GetControlledTank())
-	{
-		return;
-	}
+	if (ensure(!GetControlledTank())) { return; }
 	
 	FVector HitLocation; // OUT Parameter
 	if (GetSightRayHitLocation(HitLocation))

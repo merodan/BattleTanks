@@ -24,9 +24,14 @@ public:
 
 	void AimTowardsCrossHair();
 
-private:
+protected:
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	ATank* GetControlledTank() const;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+	void FoundAimingComponent(UAimingComponent* AimingComponentReference);
+
+private:
 	// Get ray-trace location in the world
 	bool GetSightRayHitLocation(FVector& OutHitLocation) const;
 

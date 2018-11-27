@@ -16,8 +16,6 @@ ATank::ATank()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// No need to protect pointers in the constructor
-
-	TankAimingComponent = CreateDefaultSubobject<UAimingComponent>(FName("Aiming Component"));
 }
 
 // Called when the game starts or when spawned
@@ -41,31 +39,17 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-// Needed to make it callable in Blueprint
-void ATank::SetBarrelReference(UTankBarrel* SetBarrel)
-{
-	if (!TankAimingComponent) { return; }
-	TankAimingComponent->SetBarrelReference(SetBarrel);
-	Barrel = SetBarrel;
-}
-
-// Needed to make it callable in Blueprint
-void ATank::SetTurretReference(UTankTurret* SetTurret)
-{
-	if (!TankAimingComponent) { return; }
-	TankAimingComponent->SetTurretReference(SetTurret);
-}
-
 
 void ATank::AimAt(FVector HitLocation)
 {
-	if (!TankAimingComponent) { return; }
+	if (ensure(!TankAimingComponent)) { return; }
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
 
 
 void ATank::Fire()
 {
+	if (ensure(!Barrel)) { return; }
 	bool isReloaded = (GetWorld()->GetTimeSeconds() - LastFireTime) > ReloadTime;
 
 	if (Barrel && isReloaded)
